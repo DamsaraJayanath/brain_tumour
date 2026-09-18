@@ -123,8 +123,8 @@ It is not a medical diagnostic tool and should not be used for medical decisions
 
 ## Project Demo
 
-I will add screenshots/video of the application here.
-
-### Upload
+![image alt](https://github.com/DamsaraJayanath/brain_tumour/blob/afbe6a4a586978839315fdddf6f36b6a5c06c645/SS1.png)
 
 ### Detection Result
+
+![image alt](https://github.com/DamsaraJayanath/brain_tumour/blob/9b93a73205e9a1c5c324843263a62cba86e00104/result.png)
