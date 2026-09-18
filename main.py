@@ -10,7 +10,6 @@ from fastapi.templating import Jinja2Templates
 from ultralytics import YOLO
 
 
-# All paths are relative to this project folder, so the app can be run from its root.
 BASE_DIR = Path(__file__).resolve().parent
 UPLOADS_DIR = BASE_DIR / "uploads"
 RESULTS_DIR = BASE_DIR / "results"
@@ -23,13 +22,11 @@ CONFIDENCE_THRESHOLD = 0.25
 MAX_FILE_SIZE = 10 * 1024 * 1024  # 10 MB
 ALLOWED_EXTENSIONS = {".jpg", ".jpeg", ".png"}
 
-# Load the trained model once when the application starts, not for every request.
 model = YOLO(str(MODEL_PATH))
 
 app = FastAPI(title="Brain Tumor Detection")
 templates = Jinja2Templates(directory=str(BASE_DIR / "templates"))
 
-# FastAPI serves CSS/JavaScript and generated result images from these directories.
 app.mount("/static", StaticFiles(directory=str(BASE_DIR / "static")), name="static")
 app.mount("/results", StaticFiles(directory=str(RESULTS_DIR)), name="results")
 
@@ -65,18 +62,15 @@ async def predict(file: UploadFile = File(...)):
     if file.content_type and file.content_type not in {"image/jpeg", "image/png"}:
         raise HTTPException(status_code=400, detail="The uploaded file must be a JPG, JPEG, or PNG image.")
 
-    # Read a bounded number of bytes so an unexpectedly large upload is rejected early.
     image_bytes = await file.read(MAX_FILE_SIZE + 1)
     if len(image_bytes) > MAX_FILE_SIZE:
         raise HTTPException(status_code=413, detail="The image must be smaller than 10 MB.")
 
-    # OpenCV decodes the bytes and also catches files with an image extension but bad content.
     image = cv2.imdecode(np.frombuffer(image_bytes, dtype=np.uint8), cv2.IMREAD_COLOR)
     if image is None:
         raise HTTPException(status_code=400, detail="The uploaded file is not a valid image.")
 
     try:
-        # Ultralytics performs inference on the decoded OpenCV image.
         predictions = model(image, conf=CONFIDENCE_THRESHOLD, verbose=False)
         result = predictions[0]
         detections = []
@@ -92,7 +86,6 @@ async def predict(file: UploadFile = File(...)):
             class_name = get_class_name(class_id)
             label = f"{class_name} {confidence:.1%}"
 
-            # Draw the detection rectangle and a readable label using OpenCV.
             cv2.rectangle(image, (x1, y1), (x2, y2), (190, 90, 255), 2)
             (text_width, text_height), baseline = cv2.getTextSize(
                 label, cv2.FONT_HERSHEY_SIMPLEX, 0.6, 2
@@ -137,7 +130,6 @@ async def predict(file: UploadFile = File(...)):
         print(f"Prediction failed: {error}")
         raise HTTPException(status_code=500, detail="The image could not be analyzed. Please try again.") from error
 
-    # Return browser-safe URL data rather than exposing server filesystem paths.
     return {
         "result_url": f"/results/{result_filename}",
         "detections": detections,
