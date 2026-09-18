@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brain Tumor Detection</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="ambient ambient-one"></div>
+    <div class="ambient ambient-two"></div>
+    <main class="dashboard">
+        <header class="page-header">
+            <div class="brand-mark" aria-hidden="true">+</div>
+            <div>
+                <p class="eyebrow">COMPUTER VISION / MRI ANALYSIS</p>
+                <h1>Brain Tumor Detection</h1>
+                <p class="subtitle">YOLO-powered MRI image analysis</p>
+            </div>
+        </header>
+
+        <section class="upload-card panel">
+            <div class="section-heading">
+                <div>
+                    <p class="section-kicker">01 / INPUT</p>
+                    <h2>Upload MRI Image</h2>
+                    <p>Select a JPG, JPEG, or PNG image to analyze.</p>
+                </div>
+                <span class="model-chip"><span class="status-dot"></span> Model ready</span>
+            </div>
+
+            <label class="drop-zone" for="image-input" id="drop-zone">
+                <span class="upload-icon" aria-hidden="true">↑</span>
+                <span class="drop-title">Drop an image here</span>
+                <span class="drop-description">or choose a file from your device</span>
+                <span class="file-name" id="file-name">No file selected</span>
+                <input id="image-input" type="file" accept="image/jpeg,image/png,.jpg,.jpeg,.png">
+            </label>
+            <div class="preview-wrap hidden" id="preview-wrap">
+                <span class="preview-label">Selected image</span>
+                <img id="preview-image" alt="Preview of selected MRI image">
+            </div>
+            <button class="primary-button" id="analyze-button" type="button" disabled>
+                <span>Analyze Image</span><span class="button-arrow" aria-hidden="true">→</span>
+            </button>
+            <p class="error-message hidden" id="error-message" role="alert"></p>
+            <p class="loading-message hidden" id="loading-message"><span class="loader"></span> Analyzing image...</p>
+        </section>
+
+        <section class="results-section hidden" id="results-section">
+            <div class="section-heading result-heading">
+                <div>
+                    <p class="section-kicker">02 / OUTPUT</p>
+                    <h2>Detection Result</h2>
+                </div>
+                <span class="result-count" id="result-count"></span>
+            </div>
+            <div class="image-comparison">
+                <figure class="image-panel">
+                    <figcaption><span>Original Image</span><span class="image-tag">INPUT</span></figcaption>
+                    <div class="image-frame"><img id="original-image" alt="Original uploaded MRI image"></div>
+                </figure>
+                <div class="versus" aria-hidden="true">VS</div>
+                <figure class="image-panel result-image-panel">
+                    <figcaption><span>Detection Result</span><span class="image-tag accent-tag">YOLO</span></figcaption>
+                    <div class="image-frame"><img id="result-image" alt="MRI image with YOLO detections"></div>
+                </figure>
+            </div>
+            <div class="detection-panel">
+                <div class="detection-title-row">
+                    <div><p class="section-kicker">MODEL OUTPUT</p><h3>Detection Results</h3></div>
+                    <span class="confidence-note">Threshold 25%</span>
+                </div>
+                <div id="detections-list"></div>
+            </div>
+        </section>
+
+        <footer class="disclaimer">For educational and research purposes only. This application is not intended for medical diagnosis or clinical decision-making.</footer>
+    </main>
+    <script src="/static/script.js"></script>
+</body>
+</html>
