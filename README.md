@@ -54,7 +54,7 @@ Clone the repository:
 
 ```bash
 git clone YOUR_GITHUB_REPOSITORY_URL
-cd brain-tumor-detection
+cd brain_tumor
 ```
 
 Create a virtual environment:
@@ -127,4 +127,4 @@ I will add screenshots/video of the application here.
 
 ### Upload
 
-### Detection Resul
+### Detection Result
